@@ -1,21 +1,19 @@
 import axios from './axios';
 
-export const loginCall = async (userCredentials, dispatch) => {
-  dispatch({ type: 'LOGIN_START' });
+export const loginRequest = async (userCredentials) => {
   try {
     const res = await axios.post('/auth/login', userCredentials);
-    dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+    return res.data;
   } catch (err) {
-    dispatch({ type: 'LOGIN_FAILURE', payload: err });
+    console.log(err);
   }
 };
 
-export const logoutCall = async (dispatch) => {
-  dispatch({ type: 'LOGOUT_START' });
+export const logoutRequest = async () => {
   try {
-    await axios.post('/auth/logout');
-    dispatch({ type: 'LOGOUT_SUCCESS' });
+    const res = await axios.post('/auth/logout');
+    return res;
   } catch (err) {
-    dispatch({ type: 'LOGOUT_FAILURE', payload: err });
+    console.log(err);
   }
 };
