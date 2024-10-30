@@ -1,6 +1,7 @@
 import {
   loginUserService,
   logoutUserService,
+  verifyTokenService,
 } from '../services/userAuth.service.js';
 
 const loginUserController = async (req, res) => {
@@ -9,7 +10,8 @@ const loginUserController = async (req, res) => {
     if (!userData) {
       return res.status(400).send('Datos de usuario no proporcionados.');
     }
-    const user = await loginUserService(userData);
+    const { user, token } = await loginUserService(userData);
+    res.cookie('token', token);
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -17,9 +19,10 @@ const loginUserController = async (req, res) => {
   }
 };
 
-const logoutUserController = async (req, res) => {
+const logoutUserController = async (_req, res) => {
   try {
     const response = await logoutUserService();
+    res.clearCookie('token');
     return res.status(200).send(response);
   } catch (error) {
     console.log(error);
@@ -27,4 +30,19 @@ const logoutUserController = async (req, res) => {
   }
 };
 
-export { loginUserController, logoutUserController };
+const verifyTokenController = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).send('No autorizado.');
+    }
+    const { decoded } = await verifyTokenService(token);
+
+    res.status(200).json(decoded);
+  } catch (error) {
+    console.log(error);
+    return res.status(401).send('No autorizado.');
+  }
+};
+
+export { loginUserController, logoutUserController, verifyTokenController };

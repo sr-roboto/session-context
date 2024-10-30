@@ -18,7 +18,13 @@ const loginUserService = async (userData) => {
     if (!user) {
       throw new Error('Usuario no encontrado.');
     }
-    return user;
+
+    const token = await createAccesToken({ id: user.id });
+
+    if (!token) {
+      throw new Error('Error al crear el token.');
+    }
+    return { user, token };
   } catch (e) {
     throw e;
   }
@@ -32,4 +38,12 @@ const logoutUserService = async () => {
   }
 };
 
-export { loginUserService, logoutUserService };
+const verifyTokenService = async (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET);
+  } catch (e) {
+    throw e;
+  }
+};
+
+export { loginUserService, logoutUserService, verifyTokenService };
