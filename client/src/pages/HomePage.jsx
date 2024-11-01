@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/authContext';
+import SrWhite from '../assets/wwhite162.jpg';
 
 export const HomePage = () => {
   const { state, logout } = useAuth();
@@ -23,10 +24,11 @@ export const HomePage = () => {
             Bienvenido{' '}
             <span className="font-thin text-pink-600">{state.user.name}</span>
           </h1>
+          <img src={SrWhite} alt="Sr White" className="w-96" />
           <button
             onClick={logout}
             className="
-          bg-teal-600 text-white p-2 rounded-md animate-spin 
+          bg-green-950 text-white p-2 rounded-md animate-bounce
           "
           >
             Cerrar sesión
