@@ -1,12 +1,12 @@
 import { User } from '../models/user.model.js';
+import { createAccesToken } from '../libs/jwt.lib.js';
+import jwt from 'jsonwebtoken';
 
 const loginUserService = async (userData) => {
   try {
-    if (!userData) {
-      throw new Error('Datos de usuario no proporcionados.');
-    }
-
     const { email, password } = userData;
+
+    console.log(userData);
 
     const user = await User.findOne({
       where: {
@@ -14,6 +14,11 @@ const loginUserService = async (userData) => {
         password: password,
       },
     });
+    console.log(user);
+
+    const idUser = await User.findByPk(1);
+
+    console.log(idUser);
 
     if (!user) {
       throw new Error('Usuario no encontrado.');
@@ -40,7 +45,9 @@ const logoutUserService = async () => {
 
 const verifyTokenService = async (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return { decoded };
   } catch (e) {
     throw e;
   }

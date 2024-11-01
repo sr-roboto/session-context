@@ -1,19 +1,30 @@
 import axios from './axios';
 
-export const loginRequest = async (userCredentials) => {
+const loginRequest = async (userCredentials) => {
   try {
-    const res = await axios.post('/auth/login', userCredentials);
+    const res = await axios.post('/login', userCredentials);
     return res.data;
   } catch (err) {
     console.log(err);
   }
 };
 
-export const logoutRequest = async () => {
+const logoutRequest = async () => {
   try {
-    const res = await axios.post('/auth/logout');
+    const res = await axios.post('/logout');
     return res;
   } catch (err) {
     console.log(err);
   }
 };
+
+const verifyTokenRequest = async () => {
+  try {
+    const res = await axios.get('/verify');
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { loginRequest, logoutRequest, verifyTokenRequest };

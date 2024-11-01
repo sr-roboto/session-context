@@ -12,6 +12,7 @@ const loginUserController = async (req, res) => {
     }
     const { user, token } = await loginUserService(userData);
     res.cookie('token', token);
+    console.log(req.cookies);
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);

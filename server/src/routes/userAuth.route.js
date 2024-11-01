@@ -4,13 +4,14 @@ import {
   logoutUserController,
   verifyTokenController,
 } from '../controllers/userAuth.controller.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const userAuthRouter = Router();
 
 userAuthRouter.post('/login', loginUserController);
 
-userAuthRouter.post('/logout', logoutUserController);
+userAuthRouter.post('/logout', authMiddleware, logoutUserController);
 
-userAuthRouter.get('/verify', verifyTokenController);
+userAuthRouter.get('/verify', authMiddleware, verifyTokenController);
 
 export { userAuthRouter };
